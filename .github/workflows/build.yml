@@ -1,0 +1,34 @@
+name: 図解画像をつくる
+
+# zukai.json か build.py を直すと、png/ の画像を作り直して保存します
+on:
+  push:
+    paths: ["zukai.json", "build.py", "sensei.png"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 日本語フォントとブラウザを入れる
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk
+          pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: 画像をつくる
+        run: python build.py
+      - name: 保存
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add png
+          git diff --cached --quiet && exit 0
+          git commit -m "図解画像を更新"
+          git push

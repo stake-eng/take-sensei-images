@@ -57,6 +57,7 @@ body{width:1080px;height:1350px;font-family:'Noto Sans CJK JP','Noto Sans JP',sa
 .row .txt span{display:block;font-size:24px;font-weight:400;color:#5A5A5A;margin-top:4px}
 .steps .row .no{background:#2E3A59}
 .dense .list{gap:10px}.dense .row{padding:10px 24px}.dense .row .no{flex-basis:54px;height:54px;font-size:28px}.dense .row .txt{font-size:28px}.dense .row .txt span{font-size:22px}.dense .row .big{font-size:40px}.dense .head{padding:44px 64px 36px}.dense .title{font-size:58px}.dense .card{min-height:0;padding:16px 18px}.dense .grid{gap:14px}
+.roomy .list{gap:28px}.roomy .row{padding:40px 30px}.roomy .row .txt{font-size:38px}.roomy .row .txt span{font-size:28px;margin-top:10px}.roomy .row .no{flex-basis:80px;height:80px;font-size:40px}
 .foot{position:absolute;left:0;right:0;bottom:0;height:210px;display:flex;align-items:flex-end;padding:0 56px 34px;gap:24px}
 .mascot{width:150px;height:175px;flex:0 0 150px}
 .mascot svg,.mascot img{width:100%;height:100%;object-fit:contain}
@@ -80,7 +81,7 @@ def render(z: dict) -> str:
             sub = f'<span>{c["s"]}</span>' if c.get("s") else ""
             rows.append(f'<div class="row"><div class="no">{i}</div>{big}<div class="txt">{c["t"]}{sub}</div></div>')
         inner = f'<div class="{cls}">' + "".join(rows) + "</div>"
-    return f"""<html><head><meta charset="utf-8"><style>{CSS}</style></head><body class="{'dense' if z.get('dense') else ''}">
+    return f"""<html><head><meta charset="utf-8"><style>{CSS}</style></head><body class="{'dense' if z.get('dense') else ('roomy' if len(z['items']) <= 3 else '')}">
 <div class="head"><div class="kicker">{z['kicker']}</div><div class="title">{z['title']}</div></div>
 <div class="body">{inner}</div>
 <div class="foot"><div class="mascot">{mascot()}</div><div class="msg">{z['msg']}</div></div>
